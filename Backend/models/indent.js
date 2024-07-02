@@ -7,4 +7,4 @@ const indentSchema = new Schema({
     quantity: Number
 })
 
-export default Indent = mongoose.model("Indent",indentSchema);
+module.exports = Indent = mongoose.model("Indent",indentSchema);

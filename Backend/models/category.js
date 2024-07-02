@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const categorySchema = Schema({
-    category: String, 
-    list: [{ type: Schema.Types.ObjectId, ref: "Item" }] //this
-})
+const categorySchema = new Schema({
+    category: { type: String, required: true },
+    list: []
+});
 
-export default Category = mongoose.model("Category",categorySchema)
+
+const Category = mongoose.model("Category", categorySchema);
+module.exports = Category;

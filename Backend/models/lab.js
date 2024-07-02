@@ -1,8 +1,13 @@
+
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const labSchema = Schema({
-    labName: String    
+    labName: String ,
+    staff : String   
 })
 
-export default Lab = mongoose.model("Lab",labSchema)
+const Lab = mongoose.model("Lab",labSchema)
+
+module.exports = Lab;

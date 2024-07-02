@@ -7,4 +7,4 @@ const vendorSchema = Schema({
     vendorMobile: Number
 });
 
-export default  Vendor = mongoose.model('Vendor', vendorSchema);
+module.exports = Vendor = mongoose.model('Vendor', vendorSchema);
