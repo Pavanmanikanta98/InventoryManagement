@@ -5,10 +5,7 @@ const Tolab = require('../../models/toLabRegister');
 //from stock to lab
 
 
-<<<<<<< HEAD
-//from stock to lab
 
-=======
 //@route to issue item to lab
 router.post("/", async (req, res) => {
     const { item, quantity, Date, labName, category, numberOfUnits, issueTo, issueBy } = req.body;
@@ -99,4 +96,5 @@ router.patch('/', async (req, res) => {
 })
 
 module.exports = router;
->>>>>>> cf4ffccbb87cd88223887a6562ed02b968a81a4a
+
+
