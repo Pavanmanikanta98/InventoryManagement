@@ -5,9 +5,9 @@ const ToCentral = require('../../models/stockRegister');
 
 //@route to issue item to lab
 router.post("/", async (req, res) => {
-    const { item,category, ReceivedFrom, Date, unitPrice, invoice, numberOfUnits, quantityType, quantityPerUnit } = req.body;
+    const { item,category, ReceivedFrom, date, unitPrice, invoice, numberOfUnits, quantityType, quantityPerUnit } = req.body;
 
-    if (item === null ||category===null ||  ReceivedFrom === null|| Date === null  || unitPrice === null ||
+    if (item === null ||category===null ||  ReceivedFrom === null|| date === null  || unitPrice === null ||
          invoice===null || numberOfUnits === null || quantityType === null || quantityPerUnit === null) {
         return res.status(400).json({ msg: 'data insuff' });
     }
@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
             item,
             category,
             ReceivedFrom,
-            Date,
+            date,
             unitPrice,
             invoice,
             numberOfUnits,
@@ -79,7 +79,7 @@ router.patch('/', async (req, res) => {
         if (item) issue.item = item;
         if (category) issue.category = category;
         if (ReceivedFrom) issue.ReceivedFrom = ReceivedFrom;
-        if (Date) issue.Date = Date;
+        if (date) issue.date = Date;
         if (unitPrice) issue.unitPrice = unitPrice;
         if (invoice) issue.invoice = invoice;
         if (numberOfUnits) issue.numberOfUnits = numberOfUnits;

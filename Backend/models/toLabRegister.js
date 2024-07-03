@@ -5,7 +5,7 @@ const toLabSchema = new Schema({
 
     item : String,
     quantity : Number,
-    Date: { type: Date, default: Date.now() },
+    date: { type: Date, default: Date.now() },
     labName : String,
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     numberOfUnits: { type: Number, required: true },   //total quantity received for this item
