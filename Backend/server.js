@@ -25,10 +25,13 @@ app.use("/api/categories", require('./api/purchases/categories'));
 app.use("/api/vendors", require('./api/purchases/vendors'));
 app.use("/api/items", require('./api/purchases/items'));
 app.use("/api/users", require('./api/purchases/users'));
+app.use('/api/utility', require('./api/labUtilility/labs'));
 
 
 
 const PORT = process.env.PORT || 3000;
+
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 //create Admin and user separate routes

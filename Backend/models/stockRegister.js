@@ -19,4 +19,4 @@ const stockSchema = new Schema({
 });
 
 
-export default  Item = mongoose.model('Stock', stockSchema);
+module.exports  = Item = mongoose.model('Stock', stockSchema);

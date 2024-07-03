@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
-const vendorSchema = Schema({
+const vendorSchema = new Schema({
     vendorName: String,
     vendorAddress: String,
     vendorMobile: Number
