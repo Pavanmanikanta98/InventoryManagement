@@ -26,6 +26,9 @@ app.use("/api/vendors", require('./api/purchases/vendors'));
 app.use("/api/items", require('./api/purchases/items'));
 app.use("/api/users", require('./api/purchases/users'));
 
+app.use("/api/toCentral",require('./api/issues/toCentral'))
+app.use("/api/toLab",require('./api/issues/toLab'))
+
 
 
 const PORT = process.env.PORT || 3000;
