@@ -273,9 +273,6 @@ router.get("/indent", async(req,res)=>{
 
 
 
-<<<<<<< HEAD
 module.exports = router;
-=======
 
 
->>>>>>> cf4ffccbb87cd88223887a6562ed02b968a81a4a
