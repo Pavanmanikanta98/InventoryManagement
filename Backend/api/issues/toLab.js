@@ -4,21 +4,21 @@ const router = express.Router();
 const Tolab = require('../../models/toLabRegister');
 //from stock to lab
 
-
-//@route to issue item to lab
+//issue item to lab
 router.post("/", async (req, res) => {
-    const { item, quantity, Date, labName, category, numberOfUnits, issueTo, issueBy } = req.body;
+    const { item, quantity, date, labName, category, numberOfUnits, issueTo, issueBy } = req.body;
 
-    if (item === null || quantity === null || Date === null || labName === null ||
-        category === null || numberOfUnits === null || issueTo === null || issueBy === null) {
-        return res.status(400).json({ msg: 'data insuff' });
-    }
 
     try {
+
+        if (item === null || quantity === null || date === null || labName === null ||
+            category === null || numberOfUnits === null || issueTo === null || issueBy === null) {
+            return res.status(400).json({ msg: 'data insuff' });
+        }
         const newIssue = new Tolab({
             item,
             quantity,
-            Date,
+            date,
             labName,
             category,
             numberOfUnits,
@@ -69,7 +69,7 @@ router.delete('/', async (req, res) => {
 
 //@route to update an issue
 router.patch('/', async (req, res) => {
-    const { item, quantity, Date, labName, category, numberOfUnits, issueTo, issueBy } = req.body;
+    const { item, quantity, date, labName, category, numberOfUnits, issueTo, issueBy } = req.body;
 
     const { id } = req.body;
 
@@ -80,7 +80,7 @@ router.patch('/', async (req, res) => {
         }
         if (item) issue.item = item;
         if (quantity) issue.quantity = quantity;
-        if (Date) issue.Date = Date;
+        if (date) issue.date = date;
         if (labName) issue.labName = labName;
         if (category) issue.category = category;
         if (numberOfUnits) issue.numberOfUnits = numberOfUnits;
@@ -95,3 +95,4 @@ router.patch('/', async (req, res) => {
 })
 
 module.exports = router;
+

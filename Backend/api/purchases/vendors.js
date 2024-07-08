@@ -2,7 +2,7 @@ const express = require('express');
 const Vendor = require('../../models/vendor');
 const Indent = require('../../models/indent');
 const Quotation = require('../../models/quotation');
-const indent = require('../../models/indent');
+// const indent = require('../../models/indent');
 
 const router = express.Router();
 
@@ -273,5 +273,9 @@ router.get("/indent", async(req,res)=>{
 
 
 
+<<<<<<< HEAD
+module.exports = router;
+=======
 
 
+>>>>>>> cf4ffccbb87cd88223887a6562ed02b968a81a4a

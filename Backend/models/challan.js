@@ -4,10 +4,14 @@ const Schema = mongoose.Schema;
 const challanSchema = new Schema({
     customer : String,
     challanType : String,
-    Date: { type: Date, default: Date.now() },
+    date: { type: Date, default: Date.now() },
     vendor: String,
-    
-    
+    item:[ { type: String }],
+    description: [ { type: String }],
+    quantity: [ { type: Number }],
+    unitRate: [ { type: Number }],
+    tax: [ { type: Number }],
+    totalAmount: [ { type: Number }]
 });
 
 

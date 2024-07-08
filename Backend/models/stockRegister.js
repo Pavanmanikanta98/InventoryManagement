@@ -19,4 +19,7 @@ const stockSchema = new Schema({
 });
 
 
+
+
 module.exports = ToCentral = mongoose.model('Stock', stockSchema);  
+

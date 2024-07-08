@@ -67,7 +67,7 @@ router.delete('/', async (req, res) => {
 
 //@route to update an issue
 router.patch('/', async (req, res) => {
-    const { item,category, ReceivedFrom, Date, unitPrice, invoice, numberOfUnits, quantityType, quantityPerUnit} = req.body;
+    const { item,category, ReceivedFrom, date, unitPrice, invoice, numberOfUnits, quantityType, quantityPerUnit} = req.body;
 
     const { id } = req.body;
 
@@ -79,7 +79,7 @@ router.patch('/', async (req, res) => {
         if (item) issue.item = item;
         if (category) issue.category = category;
         if (ReceivedFrom) issue.ReceivedFrom = ReceivedFrom;
-        if (date) issue.date = Date;
+        if (date) issue.date = date;
         if (unitPrice) issue.unitPrice = unitPrice;
         if (invoice) issue.invoice = invoice;
         if (numberOfUnits) issue.numberOfUnits = numberOfUnits;
