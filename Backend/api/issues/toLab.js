@@ -4,13 +4,6 @@ const router = express.Router();
 const Tolab = require('../../models/toLabRegister');
 //from stock to lab
 
-<<<<<<< HEAD
-//issue item to lab
-=======
-
-
-//@route to issue item to lab
->>>>>>> bef9692f4d6fb5e2ca9bb5e2bbc63e75d251970f
 router.post("/", async (req, res) => {
     const { item, quantity, date, labName, category, numberOfUnits, issueTo, issueBy } = req.body;
 
@@ -102,7 +95,4 @@ router.patch('/', async (req, res) => {
 
 module.exports = router;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> bef9692f4d6fb5e2ca9bb5e2bbc63e75d251970f
