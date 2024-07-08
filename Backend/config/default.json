@@ -1,0 +1,8 @@
+{
+    "database": {
+      "url": "mongodb+srv://john:3M58Djef5Vrhg3j@rcpinventory.8iv3rak.mongodb.net/ims"
+    },
+    "jwtSecret": "your_secret_key",
+    "port": 3000
+  }
+  

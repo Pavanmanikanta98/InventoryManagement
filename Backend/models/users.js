@@ -8,7 +8,7 @@ const userSchema = new  Schema({
      email: String,
      password: { type: String, required: true },
      phone : String,
-     position : { type: String, required: true },
+     position : { type: String, required: true }
 })
 
 const User = mongoose.model("User",userSchema)

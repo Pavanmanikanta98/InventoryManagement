@@ -21,12 +21,11 @@ const stockSchema = new Schema({
 
 
 
-<<<<<<< HEAD
-module.exports = ToCentral = mongoose.model('Stock', stockSchema);  
+// module.exports = ToCentral = mongoose.model('Stock', stockSchema);  
 
-=======
+
 
  const ToCentral = mongoose.model('Stock', stockSchema);  
 
  module.exports = ToCentral;
->>>>>>> bef9692f4d6fb5e2ca9bb5e2bbc63e75d251970f
+

@@ -7,6 +7,7 @@ const Lab = require('../../models/lab');
 //@route post api/labs
 //desc  create a lab
 router.post("/", async (req, res) => { 
+    // here staff is user id
     const {labName, staff }= req.body
     // console.log(lab);
     try {

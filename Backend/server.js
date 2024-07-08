@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const config = require('config')
+
 
 const app = express();
 
@@ -8,7 +10,7 @@ app.use(bodyParser.json());
 app.use(express.json({ extended: false }));
 
 // MongoDB connection setup
-mongoose.connect('mongodb+srv://john:3M58Djef5Vrhg3j@rcpinventory.8iv3rak.mongodb.net/ims',)
+mongoose.connect(config.get('database.url'))
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('MongoDB connection error:', err));
 
@@ -32,7 +34,7 @@ app.use("/api/toLab",require('./api/issues/toLab'))
 
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = config.get('port')|| 4000;
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
