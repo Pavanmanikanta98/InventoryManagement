@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const Tolab = require('../../models/toLabRegister');
+const Tolab = require('../../../models/toLabRegister');
 //from stock to lab
 
 router.post("/", async (req, res) => {

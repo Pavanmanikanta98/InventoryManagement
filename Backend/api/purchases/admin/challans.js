@@ -2,7 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
-const Challan = require('../../models/challan');
+const Challan = require('../../../models/challan');
+
 
 //@route to create a challan
 router.post("/", async (req, res) => {

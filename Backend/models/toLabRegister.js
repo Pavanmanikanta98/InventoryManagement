@@ -13,4 +13,5 @@ const toLabSchema = new Schema({
     issueBy: String
 })
 
-module.exports = ToLab = mongoose.model("ToLab",toLabSchema)
+module.exports = ToLab = mongoose.model("ToLab",toLabSchema);
+
