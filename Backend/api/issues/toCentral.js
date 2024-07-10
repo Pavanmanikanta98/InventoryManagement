@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
     }
 
     try {
-        const newIssue = new Tocentral({
+        const newIssue = new ToCentral({
             item,
             category,
             ReceivedFrom,

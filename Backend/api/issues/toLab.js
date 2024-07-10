@@ -1,36 +1,65 @@
 const express = require('express');
 
 const router = express.Router();
+const mongoose = require("mongoose");
 const Tolab = require('../../models/toLabRegister');
+const controller = require('../../qrcode/controller');
 //from stock to lab
 
 router.post("/", async (req, res) => {
-    const { item, quantity, date, labName, category, numberOfUnits, issueTo, issueBy } = req.body;
+    const { item, quantity, date, labName, categoryId, numberOfUnits, issueTo, issueBy } = req.body;
 
 
     try {
 
+        // console.log(req.body)
+
         if (item === null || quantity === null || date === null || labName === null ||
-            category === null || numberOfUnits === null || issueTo === null || issueBy === null) {
+            categoryId === null || numberOfUnits === null || issueTo === null || issueBy === null) {
             return res.status(400).json({ msg: 'data insuff' });
         }
-        const newIssue = new Tolab({
+
+        // if (!mongoose.Types.ObjectId.isValid(category)) {
+        //     return res.status(400).json({ msg: 'Invalid category ID' });
+        // }
+
+        let newIssue = new Tolab({
             item,
             quantity,
             date,
             labName,
-            category,
+            category : categoryId,
             numberOfUnits,
             issueTo,
             issueBy
         });
-        await newIssue.save();
-        res.status(201).json({ message: "item issued to lab" });
+          newIssue =  await newIssue.save();
+        //   console.log(newIssue);
+        const data = {
+            item,
+            quantity,
+            date,
+            labName,
+            categoryId,
+            issueTo,
+            numberOfUnits
+        }
+         
+       const qrcode = controller.generateQR(data);
+       res.setHeader('Content-Disposition', 'attachment; filename=qrcode.png');
+        
+		 res.type('image/png').send(qrCodeBuffer);
+
+        // res.status(201).json({ message: "item issued to lab" });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
     }
 });
+
+//qrcode
+router.post('/generate-qr', controller.generateQR);
+
 
 //@route to get all issues to lab
 router.get('/', async (req, res) => {
