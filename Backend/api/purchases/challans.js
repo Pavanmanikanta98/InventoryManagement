@@ -4,8 +4,10 @@ const router = express.Router();
 
 const Challan = require('../../models/challan');
 
+const { adminAuth } = require('../middleaware/middleAware');
+
 //@route to create a challan
-router.post("/", async (req, res) => {
+router.post("/",adminAuth, async (req, res) => {
 
     try {
         const { customer, challanType, date, vendor, items } = req.body;
@@ -32,7 +34,7 @@ router.post("/", async (req, res) => {
 })
 
 //@route to get all challans
-router.get("/", async (req, res) => {
+router.get("/",adminAuth,  async (req, res) => {
     try {
 
         const challans = await Challan.find().sort({ date: -1 });
@@ -47,7 +49,7 @@ router.get("/", async (req, res) => {
 })
 
 //@route to get a particular challan
-router.get("/:id",async(req,res)=>{
+router.get("/:id",adminAuth, async(req,res)=>{
     const {id} = req.params;
     try {
         const challan = await Challan.findById(id);
@@ -67,7 +69,7 @@ router.get("/:id",async(req,res)=>{
 
 
 //@route to delete a challan
-router.delete('/', async (req, res) => {
+router.delete('/',adminAuth, async (req, res) => {
     const { id } = req.body;
     try {
         if (!id) return res.status(403).json({ message: "insufficient data" });

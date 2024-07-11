@@ -9,8 +9,19 @@ const toLabSchema = new Schema({
     labName : String,
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     numberOfUnits: { type: Number, required: true },   //total quantity received for this item
-    issueTo : String,
-    issueBy: String
+    issueTo: {
+        type: String,
+        required: true
+      },
+      issueBy: {
+        type: String,
+        required: true
+      },
+    qrCodeId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'fs.files',
+        required: true
+      }
 })
 
 module.exports = ToLab = mongoose.model("ToLab",toLabSchema)
