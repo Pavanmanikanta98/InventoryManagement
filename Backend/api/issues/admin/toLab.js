@@ -1,63 +1,26 @@
 const express = require('express');
 
 const router = express.Router();
-const mongoose = require("mongoose");
-const Tolab = require('../../models/toLabRegister');
-const controller = require('../../qrcode/controller');
+const Tolab = require('../../../models/toLabRegister');
 //from stock to lab
 
 router.post("/", async (req, res) => {
-    const { item, quantity, date, labName, categoryId, numberOfUnits, issueTo, issueBy } = req.body;
+    const { item, quantity, date, labName, category, numberOfUnits, issueTo, issueBy } = req.body;
 
 
     try {
 
-        // console.log(req.body)
-
         if (item === null || quantity === null || date === null || labName === null ||
-            categoryId === null || numberOfUnits === null || issueTo === null || issueBy === null) {
+            category === null || numberOfUnits === null || issueTo === null || issueBy === null) {
             return res.status(400).json({ msg: 'data insuff' });
         }
+
 
         // if (!mongoose.Types.ObjectId.isValid(category)) {
         //     return res.status(400).json({ msg: 'Invalid category ID' });
         // }
 
         //   console.log(newIssue);
-        const data = {
-            item,
-            quantity,
-            date,
-            labName,
-            categoryId,
-            issueTo,
-            numberOfUnits
-        }
-
-        //qrcode 
-         
-       const qrcode = await controller.generateQR(data);
-       const writeStream = gfs.createWriteStream({
-        filename: 'qrcode.png',
-        content_type: 'image/png',
-      });
-  
-      writeStream.on('finish', async () => {
-        // Save the QR code metadata to the database
-        const qrCodeMetadata = {
-          qrcode,
-          qrCodeId: writeStream.id,
-        };
-  
-        const newQrCode = new QrCodeModel(qrCodeMetadata);
-        await newQrCode.save();
-  
-        res.status(201).json({ message: 'QR code stored successfully' });
-      });
-  
-      writeStream.write(qrCodeBuffer);
-      writeStream.end();
-
 
       let newIssue = new Tolab({
         item,
@@ -68,24 +31,24 @@ router.post("/", async (req, res) => {
         numberOfUnits,
         issueTo,
         issueBy,
-        qrCodeId: qrCodeMetadata.qrCodeId,
+        qrCodeId
     });
       newIssue =  await newIssue.save();
 
-       res.setHeader('Content-Disposition', 'attachment; filename=qrcode.png');
-         console.log(qrcode);
-		 res.type('image/png').send(qrcode);
+    //    res.setHeader('Content-Disposition', 'attachment; filename=qrcode.png');
+    //      console.log(qrcode);
+	// 	 res.type('image/png').send(qrcode);
 
         // res.status(201).json({ message: "item issued to lab" });
+          
+    
+       
+        res.status(201).json({ message: "item issued to lab" });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
     }
 });
-
-//qrcode
-router.post('/generate-qr', controller.generateQR);
-
 
 //@route to get all issues to lab
 router.get('/', async (req, res) => {

@@ -2,9 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 
-const Challan = require('../../models/challan');
+const Challan = require('../../../models/challan');
 
-const { adminAuth } = require('../middleaware/middleAware');
+
+const { adminAuth } = require('../../middleaware/middleAware');
 
 //@route to create a challan
 router.post("/",adminAuth, async (req, res) => {
@@ -89,4 +90,5 @@ router.delete('/',adminAuth, async (req, res) => {
 })
 
 module.exports = router;
+
 

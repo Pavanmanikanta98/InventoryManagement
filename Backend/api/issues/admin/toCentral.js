@@ -1,14 +1,14 @@
 const express = require('express');
 
 const router = express.Router();
-const ToCentral = require('../../models/stockRegister');
+const ToCentral = require('../../../models/stockRegister');
 
 //@route to issue item to lab
 router.post("/", async (req, res) => {
-    const { item,category, ReceivedFrom, date, unitPrice, invoice, numberOfUnits, quantityType, quantityPerUnit } = req.body;
+    const { item, category, ReceivedFrom, date, unitPrice, invoice, numberOfUnits, quantityType, quantityPerUnit } = req.body;
 
-    if (item === null ||category===null ||  ReceivedFrom === null|| date === null  || unitPrice === null ||
-         invoice===null || numberOfUnits === null || quantityType === null || quantityPerUnit === null) {
+    if (item === null || category === null || ReceivedFrom === null || date === null || unitPrice === null ||
+        invoice === null || numberOfUnits === null || quantityType === null || quantityPerUnit === null) {
         return res.status(400).json({ msg: 'data insuff' });
     }
 
@@ -67,7 +67,7 @@ router.delete('/', async (req, res) => {
 
 //@route to update an issue
 router.patch('/', async (req, res) => {
-    const { item,category, ReceivedFrom, date, unitPrice, invoice, numberOfUnits, quantityType, quantityPerUnit} = req.body;
+    const { item, category, ReceivedFrom, date, unitPrice, invoice, numberOfUnits, quantityType, quantityPerUnit } = req.body;
 
     const { id } = req.body;
 

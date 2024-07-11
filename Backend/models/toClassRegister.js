@@ -12,4 +12,4 @@ const toClassSchema = new Schema({
 
 })
 
-module.exports = ToClass = mongoose.model("ToLab",toClassSchema)
+module.exports = ToClass = mongoose.model("ToClass",toClassSchema)

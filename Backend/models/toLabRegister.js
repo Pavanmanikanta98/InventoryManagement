@@ -24,4 +24,5 @@ const toLabSchema = new Schema({
       }
 })
 
-module.exports = ToLab = mongoose.model("ToLab",toLabSchema)
+module.exports = ToLab = mongoose.model("ToLab",toLabSchema);
+

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const ToLab = require('../../models/toLabRegister');
+const ToLab = require('../../../models/toLabRegister');
 
 router.get('/', async (req, res) => {
     const {token} = req.body;
