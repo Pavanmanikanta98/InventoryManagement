@@ -48,10 +48,27 @@ router.post("/",adminAuth, async (req, res) => {
 
 })
 
+//@route to get a particular challan
+router.get("/",adminAuth, async(req,res)=>{
+    
+    try {
+        const {id}= req.body;
+        const challan = await Challan.findById(id);
+        if(!challan)  return res.status(404).json({message:"challan not found"}); 
+        return res.status(200).json(challan);
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+
+    }
+    
+})
+
+
 //@route to get all challans
 router.get("/",adminAuth,  async (req, res) => {
     try {
-
         const challans = await Challan.find().sort({ date: -1 });
         return res.json(challans);
 
@@ -63,22 +80,6 @@ router.get("/",adminAuth,  async (req, res) => {
     }
 })
 
-//@route to get a particular challan
-router.get("/:id",adminAuth, async(req,res)=>{
-    const {id} = req.params;
-    try {
-        const challan = await Challan.findById(id);
-        if(!challan)  return res.status(404).json({message:"challan not found"}); 
-        return res.status(200).json(challan);
-
-        
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
-
-    }
-    
-})
 
 
 
