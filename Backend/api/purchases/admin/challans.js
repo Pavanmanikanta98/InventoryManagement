@@ -10,11 +10,25 @@ const { adminAuth } = require('../../middleaware/middleAware');
 //@route to create a challan
 router.post("/",adminAuth, async (req, res) => {
 
+
     try {
         const { customer, challanType, date, vendor, items } = req.body;
-        if (!customer || !challanType || !date|| !vendor || !items || !Array.isArray(items)) {
+        ///add date
+        if (!customer || !challanType || !vendor || !items || !Array.isArray(items)) {
             return res.status(400).json({ message: "data insuff" });
         }
+
+        // for (let item of items) {
+        //     if (
+        //       !item.description ||
+        //       typeof item.quantity !== "number" ||
+        //       typeof item.unitRate !== "number" ||
+        //       typeof item.tax !== "number" ||
+        //       typeof item.totalAmount !== "number"
+        //     ) {
+        //       return res.status(400).json({ message: "Item data insufficient" });
+        //     }
+        //   }
 
         const challan = new Challan({
             customer,
@@ -26,7 +40,7 @@ router.post("/",adminAuth, async (req, res) => {
         await challan.save();
         res.status(201).json({ message: "challan added" });
 
-    } catch (error) {
+    } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
 
@@ -41,7 +55,7 @@ router.get("/",adminAuth,  async (req, res) => {
         const challans = await Challan.find().sort({ date: -1 });
         return res.json(challans);
 
-    } catch (error) {
+    } catch (err) {
 
         console.error(err.message);
         res.status(500).send('Server error');
@@ -58,7 +72,7 @@ router.get("/:id",adminAuth, async(req,res)=>{
         return res.status(200).json(challan);
 
         
-    } catch (error) {
+    } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
 
