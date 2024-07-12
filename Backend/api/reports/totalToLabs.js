@@ -5,9 +5,10 @@ const router = express.Router();
 
 const ToCentral = require('../../models/stockRegister');
 const LabUtility = require('../../models/labUtility');
+const { adminAuth } = require('../middleaware/middleAware');
 
 //route to get all report by search of labs
-router.get('/:labname', async(req, res )=>{
+router.get('/:labname',adminAuth, async(req, res )=>{
     try {
 
         const labname = req.params.labname;
@@ -31,7 +32,7 @@ router.get('/:labname', async(req, res )=>{
 //get class utilities
 
 
-router.get("/:labname", async(req,res)=>{
+router.get("/:labname",adminAuth, async(req,res)=>{
     try {
         const labname = req.params.labname;
         if(labname === null ) return res.status(404).json({message:"invalid data "});

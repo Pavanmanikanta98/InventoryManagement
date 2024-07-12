@@ -50,6 +50,35 @@ router.post("/", async (req, res) => {
 
         chem.availableBalance = updatedBalance;
         await chem.save()
+
+
+        // if (!mongoose.Types.ObjectId.isValid(category)) {
+        //     return res.status(400).json({ msg: 'Invalid category ID' });
+        // }
+
+        //   console.log(newIssue);
+
+      let newIssue = new Tolab({
+        item,
+        quantity,
+        date,
+        labName,
+        category : categoryId,
+        numberOfUnits,
+        issueTo,
+        issueBy,
+        qrCodeId
+    });
+      newIssue =  await newIssue.save();
+
+    //    res.setHeader('Content-Disposition', 'attachment; filename=qrcode.png');
+    //      console.log(qrcode);
+	// 	 res.type('image/png').send(qrcode);
+
+        // res.status(201).json({ message: "item issued to lab" });
+          
+    
+      
         res.status(201).json({ message: "item issued to lab" });
     } catch (err) {
         console.error(err.message);

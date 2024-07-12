@@ -8,7 +8,7 @@ exports.generateQR = async (data) => {
 		const qrCodeText = service.formData(data);
 
 		const qrCodeBuffer = await service.generateQRCode(qrCodeText);
-        console.log(qrCodeBuffer)
+        // console.log(qrCodeBuffer)
 
         return qrCodeBuffer;
 

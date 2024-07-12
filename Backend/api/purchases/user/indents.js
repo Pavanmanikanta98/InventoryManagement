@@ -3,10 +3,12 @@ const router = express.Router();
 
 const UserIndent = require('../../../models/userIndent');
 
+const { generalAuth } = require('../../middleaware/middleAware');
+
 
 
 //@route to send an indent to admin
-router.post("/",async(req,res)=>{
+router.post("/", generalAuth, async(req,res)=>{
     const {category ,itemName  , quantity , unit} = req.body;
     try {
         if(!category || !itemName || !quantity || !unit){

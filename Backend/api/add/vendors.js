@@ -2,13 +2,14 @@ const express = require('express');
 const Vendor = require('../../models/vendor');
 
 const Quotation = require('../../models/quotation');
+const { adminAuth } = require('../middleaware/middleAware');
 
 
 const router = express.Router();
 
 //@route post api/vendors
 //desc  create a vendor
-router.post("/", async (req, res) => {
+router.post("/",adminAuth, async(req, res) => {
     const { vendorName, vendorAddress, vendorMobile } = req.body;
 
     try {
@@ -38,7 +39,7 @@ router.post("/", async (req, res) => {
 })
 //@route labs api/vendors
 //desc  get vendors
-router.get('/', async (req, res) => {
+router.get('/',adminAuth, async(req, res) => {
     try {
         const vendors = await Vendor.find().sort({ date: -1 });
         return res.json(vendors);
@@ -52,7 +53,7 @@ module.exports = router;
 
 //@route for search vendor by id
 
-router.get('/', async (req, res) => {
+router.get('/',adminAuth, async(req, res) => {
     const { id } = req.body;
     try {
         if (!id) return res.status(403).json({ message: "insufficient data" });
@@ -73,7 +74,7 @@ router.get('/', async (req, res) => {
 
 
 //delete vendor
-router.delete('/', async (req, res) => {
+router.delete('/',adminAuth, async(req, res) => {
     const { id } = req.body;
     try {
         if (!id) return res.status(403).json({ message: "insufficient data" });
@@ -94,7 +95,7 @@ router.delete('/', async (req, res) => {
 
 //create quotation and link with the indent
 
-router.post('/quotation', async (req, res) => {
+router.post('/quotation',adminAuth, async (req, res) => {
     const {
         itemName, itemDescription, quantity, price, indentId
     } = req.body;
@@ -126,7 +127,7 @@ router.post('/quotation', async (req, res) => {
 })
 
 //@route for delete quotation
-router.delete('/quotation', async (req, res) => {
+router.delete('/quotation',adminAuth, async (req, res) => {
     const { id } = req.body;
     try {
         if (!id) return res.status(403).json({ message: "insufficient data" });
@@ -146,7 +147,7 @@ router.delete('/quotation', async (req, res) => {
 })
 
 //@route to get selected quotation
-router.get("/quotation",async(req,res)=>{
+router.get("/quotation",adminAuth, async(req,res)=>{
     const {id}= req.body;
 
     try{
@@ -167,7 +168,7 @@ router.get("/quotation",async(req,res)=>{
 
 //@route for all quotations
 
-router.get("/quotation", async(req,res)=>{
+router.get("/quotation",adminAuth, async(req,res)=>{
     try {
         const quotations = await Quotation.find().sort({ date: -1 });
         return res.json(quotations);

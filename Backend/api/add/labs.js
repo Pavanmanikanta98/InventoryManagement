@@ -4,9 +4,11 @@ const router = express.Router();
 
 const Lab = require('../../models/lab');
 
+const { adminAuth } = require('../middleaware/middleAware');
+
 //@route post api/labs
 //desc  create a lab
-router.post("/", async (req, res) => { 
+router.post("/",adminAuth, async (req, res) => { 
     // here staff is user id
     const {labName, staff }= req.body
     // console.log(lab);
@@ -31,7 +33,7 @@ router.post("/", async (req, res) => {
 })
 //@route labs api/labs/
 //desc  get labs
-router.get('/', async (req, res) => {
+router.get('/',adminAuth, async(req, res) => {
     try {
         const labs = await Lab.find().sort({ date: -1 });
         return res.json(labs);
@@ -42,7 +44,7 @@ router.get('/', async (req, res) => {
 });
 
 //delte lab
-router.delete('/:id',async (req,res) => {
+router.delete('/:id',adminAuth, async (req,res) => {
   const id = req.params.id;
   try {
     const lab = await Lab.findById(id);

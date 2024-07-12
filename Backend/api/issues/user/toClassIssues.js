@@ -39,10 +39,12 @@ router.get('/', async (req, res) => {
 
 //@route to delete an issue
 router.delete('/',async(req,res)=>{
-    const {id} = req.body;
+    
     try {
-      
+        const {id} = req.body;
+        ///console.log(id)
         const issue = await ToClass.findById(id);
+        //console.log(issue)
         if(!issue) return res.status(403).json({message:"issue to class not found"});
         await ToClass.findByIdAndDelete(id);
         return res.status(200).json({message:"issue deleted"});
