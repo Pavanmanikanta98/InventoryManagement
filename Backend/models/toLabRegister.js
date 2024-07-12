@@ -9,6 +9,13 @@ const toLabSchema = new Schema({
     labName : String,
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     numberOfUnits: { type: Number, required: true },   //total quantity received for this item
+
+    issueTo : String,
+    issueBy: String,
+    //availaavailableBalance:{type: Number,default:0}
+    // existingBalance: { type: Number, default: 0 },
+    // updatedBalance:{type:Number , default: 0},
+    // itemRelation : { type: Schema.Types.ObjectId, ref: "LabItem"}
     issueTo: {
         type: String,
         required: true
@@ -22,6 +29,7 @@ const toLabSchema = new Schema({
         ref: 'fs.files',
         required: true
       }
+
 })
 
 module.exports = ToLab = mongoose.model("ToLab",toLabSchema);

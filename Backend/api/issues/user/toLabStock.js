@@ -18,6 +18,8 @@ router.get('/', async (req, res) => {
     }
 });
 
+//@route to update available balance
+
 
 module.exports = router;
 
