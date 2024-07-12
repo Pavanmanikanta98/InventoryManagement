@@ -15,7 +15,6 @@ router.post('/', async (req, res) => {
 
 
     try {
-
         if (category === null ||
             itemName === null ||
             itemDescription === null ||
