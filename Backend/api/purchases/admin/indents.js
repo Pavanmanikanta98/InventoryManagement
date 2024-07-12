@@ -68,6 +68,7 @@ router.delete('/', async (req, res) => {
 })
 
 //@route to get selected indent
+
 router.get("/",async(req,res)=>{
     const {id}= req.body;
     try{
@@ -78,24 +79,28 @@ router.get("/",async(req,res)=>{
         if(!indent){
             return res.status(404).json({message:'indent not found'});
         }
+        return res.status(200).json({ indent });
     }
-    catch(err){
+    catch(er){
         console.log(er.message);
         return res.status(500).json({ message: "server side error" })
-
     }
 })
 
 //@route to get all indents
-router.get("/", async(req,res)=>{
+router.get("/bulk", async(req,res)=>{
     try {
         const indents = await Indent.find().sort({ date: -1 });
+        console.log(indents)
         return res.json(indents);
-    } catch (error) {
-        console.error(err.message);
+    } catch (er) {
+        console.error(er.message);
         res.status(500).send('Server Error');
     }
 })
+
+
+
 
 
 
