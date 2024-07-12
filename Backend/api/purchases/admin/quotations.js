@@ -71,9 +71,11 @@ router.get("/",async(req,res)=>{
         if(!quotaion){
             return res.status(404).json({message:'quotation not found'});
         }
+        return res.status(200).json({ quotaion });
+        //console.log(quotaion)
     }
     catch(err){
-        console.log(er.message);
+        console.log(err.message);
         return res.status(500).json({ message: "server side error" })
 
     }
@@ -81,11 +83,11 @@ router.get("/",async(req,res)=>{
 
 //@route for all quotations
 
-router.get("/", async(req,res)=>{
+router.get("/bulk", async(req,res)=>{
     try {
         const quotations = await Quotation.find().sort({ date: -1 });
         return res.json(quotations);
-    } catch (error) {
+    } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
