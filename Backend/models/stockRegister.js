@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const stockSchema = new Schema({
     item: String,
-    ReceivedFrom: { type: String, required: true },
+    receivedFrom: { type: String, required: true },
     date: { type: Date, default: Date.now() },//date of the transaction
     unitPrice: Number, //quantity received
     invoice: String,  //invoice number if any
@@ -16,6 +16,8 @@ const stockSchema = new Schema({
     quantityType: { type: String, required: true },
     quantityPerUnit: { type: Number, default: 0},
     //  amount: Number,
+    duringIssue : { type: Number, default: 0 },
+    availableBalance: { type: Number, default: 0 }
 });
 
 
@@ -23,7 +25,7 @@ const stockSchema = new Schema({
 
 
 
-module.exports = ToCentral = mongoose.model('Stock', stockSchema);  
+module.exports = ToCentral = mongoose.model('ToCentral', stockSchema);  
 
 
 

@@ -19,16 +19,24 @@ if( labName === null || incharge === null || toPeriod === null || quantity === 0
 }
 
 
+
+
+
  const newUsage = new LabUtility({
     labName,
     incharge,
     toPeriod,
-    quantity,
     usage,
     chemical
+    
  });
+ const availableItem = await Tolab.findOne(item);
+if(availableItem) {
+    const remainBalance = availableItem.balance;
+    availableItem.balance = remainBalance - usage;
+}
 
-newUsage =  await newUsage.save();
+ await newUsage.save();
 
 return res.status(201).json(newUsage);
 
