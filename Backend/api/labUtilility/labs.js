@@ -2,12 +2,13 @@
 const express = require('express');
 const LabUtility = require('../../models/labUtility');
 
-
+const { adminAuth } = require('../middleaware/middleAware');
 const router = express.Router();
+
 
 //@route post period/chemname
 
-router.post('/',async(req, res ) =>{
+router.post('/',adminAuth, async(req, res ) =>{
 
 const { labName, incharge, toPeriod, chemical, quantity , usage  } = req.body;
 try {
@@ -45,7 +46,7 @@ return res.status(201).json(newUsage);
 
 // @route GET api/labUtilities/:labName
 // @desc  Get all usage in a specific lab
-router.get('/:labName', async (req, res) => {
+router.get('/:labName',adminAuth, async (req, res) => {
     const labName = req.params.labName;
 
     try {
@@ -63,7 +64,7 @@ router.get('/:labName', async (req, res) => {
 
 
 //@route get chem by ID
-router.get('/:chemical',async(req, res )=> {
+router.get('/:chemical',adminAuth, async(req, res )=> {
     const chemical = req.params.chemical;
     try {
 
@@ -89,7 +90,7 @@ router.get('/:chemical',async(req, res )=> {
 //roite delete by id
 
 
-router.delete('/:id', async(req,res)=>{
+router.delete('/:id',adminAuth, async(req,res)=>{
     const id = req.params.id;
     try {
 
@@ -111,7 +112,7 @@ router.delete('/:id', async(req,res)=>{
 
 //@route for all usages
 
-router.get("/", async(req,res)=>{
+router.get("/", adminAuth, async(req,res)=>{
     try {
         const usages = await LabUtility.find().sort({ date: -1 });
         return res.json(usages);
