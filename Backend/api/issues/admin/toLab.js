@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require("mongoose");
 const router = express.Router();
 const ToLab = require('../../../models/toLabRegister');
 const ToCentral = require('../../../models/stockRegister');
@@ -50,35 +49,6 @@ router.post("/", async (req, res) => {
 
         chem.availableBalance = updatedBalance;
         await chem.save()
-
-
-        // if (!mongoose.Types.ObjectId.isValid(category)) {
-        //     return res.status(400).json({ msg: 'Invalid category ID' });
-        // }
-
-        //   console.log(newIssue);
-
-      let newIssue = new Tolab({
-        item,
-        quantity,
-        date,
-        labName,
-        category : categoryId,
-        numberOfUnits,
-        issueTo,
-        issueBy,
-        qrCodeId
-    });
-      newIssue =  await newIssue.save();
-
-    //    res.setHeader('Content-Disposition', 'attachment; filename=qrcode.png');
-    //      console.log(qrcode);
-	// 	 res.type('image/png').send(qrcode);
-
-        // res.status(201).json({ message: "item issued to lab" });
-          
-    
-      
         res.status(201).json({ message: "item issued to lab" });
     } catch (err) {
         console.error(err.message);
@@ -90,23 +60,52 @@ router.post('/', async (req, res) => {
         const { item, quantity, labName, category, numberOfUnits, issueTo, issueBy } = req.body;
 
         // Find the stock item
-        const stockItem = await ToCentral.findOne({ item }).sort({ _id: -1 });
+        const stockItem = await ToCentral.findOne({ item}).sort({ _id: -1 });
         if (!stockItem) {
             return res.status(404).json({ msg: 'Item not found in stock' });
         }
 
         // Check if the stock has enough available balance
-        if (stockItem.availableBalance < quantity*numberOfUnits) {
+        if (stockItem.availableBalance < quantity * numberOfUnits) {
             return res.status(400).json({ msg: 'Not enough stock available' });
         }
-        
-        const categoryObjectId = new mongoose.Types.ObjectId(category);
+
+
+        const labItem = await ToLab.findOne({ item, labName }).sort({ _id: -1 });
+
+        if(!labItem){
+            const newToLab = new ToLab({
+                item,
+                quantity,
+                labName,
+                category,
+                numberOfUnits,
+                issueTo,
+                issueBy,
+                duringIssue: 0,
+                availableBalance: numberOfUnits * quantity
+            });
+        }
+        const mostRecentItem = await ToLab.findOne({ item ,labName}).sort({ _id: -1 });
+
+        // Ensure the existing available balance is a valid number
+        const existingBalance = mostRecentItem && mostRecentItem.availableBalance ? mostRecentItem.availableBalance : 0;
         // Create a new ToLab document
-        const newToLab = new ToLab({ item, quantity, labName, category:categoryObjectId, numberOfUnits, issueTo, issueBy });
+        const newToLab = new ToLab({
+            item,
+            quantity,
+            labName,
+            category,
+            numberOfUnits,
+            issueTo,
+            issueBy,
+            duringIssue: existingBalance,
+            availableBalance: numberOfUnits * quantity + existingBalance
+        });
         await newToLab.save();
 
         // Update the available balance in the Stock collection
-        stockItem.availableBalance -= quantity*numberOfUnits;
+        stockItem.availableBalance -= quantity * numberOfUnits;
         await stockItem.save();
 
         res.json(newToLab);
@@ -118,15 +117,20 @@ router.post('/', async (req, res) => {
 
 
 //@route to get all issues to lab
-// router.get('/', async (req, res) => {
-//     try {
-//         const issues = await ToLab.find().sort({ date: -1 });
-//         return res.json(issues);
-//     } catch (err) {
-//         console.error(err.message);
-//         res.status(500).send('Server Error');
-//     }
-// });
+router.get('/', async (req, res) => {
+    
+    try {
+        const issues = await ToLab.find().sort({ _id: -1 });
+        return res.json(issues);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+
+
 
 //@route to delete an issue
 
@@ -137,7 +141,7 @@ router.delete('/', async (req, res) => {
 
         const issue = ToLab.findById(id);
         if (issue === null) return res.status(403).json({ message: " issue not found" });
-        await Tolab.findByIdAndDelete(id);
+        await ToLab.findByIdAndDelete(id);
 
         return res.status(200).json({ message: "issue deleted" });
 
