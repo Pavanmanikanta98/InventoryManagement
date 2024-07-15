@@ -2,12 +2,13 @@ const express = require('express');
 
 const router = express.Router();
 const Category = require('../../models/category');
+const { adminAuth } = require('../middleaware/middleAware');
 
 //@route post api/categories
 //desc  create a category
 
   //add middleaware??
-router.post("/", async (req, res) => {
+router.post("/", adminAuth, async (req, res) => {
     const { categoryName } = req.body;
 
     if (!categoryName) {
@@ -26,7 +27,7 @@ router.post("/", async (req, res) => {
 
 //@route labs api/categories/
 //desc  get categories
-router.get('/', async (req, res) => {
+router.get('/', adminAuth, async (req, res) => {
     try {
         const categories = await Category.find().sort({ date: -1 });
         return res.json(categories);
@@ -36,7 +37,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.delete('/:id',async(req,res) => {
+router.delete('/:id',adminAuth, async(req,res) => {
     const id = req.params.id;
 
     try {

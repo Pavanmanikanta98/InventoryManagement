@@ -3,11 +3,12 @@ const express = require('express');
 const router = express.Router();
 
 const ToCentral = require('../../models/stockRegister');
+const { adminAuth } = require('../middleaware/middleAware');
 
 //All chem list
 
 
-router.get('/', async(req, res )=>{
+router.get('/',adminAuth, async(req, res )=>{
 try {
    
     const issues = await ToCentral.find().sort({ date: -1 });
@@ -24,7 +25,7 @@ try {
 
 //search by chem
 
-router.get('/:chemical',async (req,res )=>{
+router.get('/:chemical',adminAuth, async (req,res )=>{
     try {
 
         const chemical = req.params.chemical;

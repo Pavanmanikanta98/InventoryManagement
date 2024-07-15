@@ -11,7 +11,7 @@ const router = express.Router();
 
 //@route post api/users
 //desc  create a user
-router.post("/signup", async(req, res) => { 
+router.post("/signup",adminAuth, async(req, res) => { 
     const { name, phone, email, password, position } = req.body;
     try {
 

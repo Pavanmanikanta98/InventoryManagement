@@ -3,7 +3,58 @@ const router = express.Router();
 const ToLab = require('../../../models/toLabRegister');
 const ToCentral = require('../../../models/stockRegister');
 //from stock to lab
+/*
+router.post("/", async (req, res) => {
+    const { item, quantity,  labName, category, numberOfUnits, issueTo, issueBy } = req.body;
 
+
+    try {
+
+        if (item === null || quantity === null || labName === null ||
+            category === null || numberOfUnits === null || issueTo === null || issueBy === null || availableBalance) {
+            return res.status(400).json({ msg: 'data insuff' });
+        }
+        
+        const chem = await LabItem.findOne( {item }).sort({ date: -1 });
+        if(!chem){
+            //create obj for itemRelation
+        }
+        console.log(chem)
+        let balance = 0;
+
+        if (chem) {
+            balance = chem ? chem.availableBalance + chem.existingBalance : 0;
+            console.log(balance)
+        }
+
+        // Calculate the new balance
+        let updatedBalance = quantity * numberOfUnits + balance;
+       console.log(updatedBalance);
+
+       
+        
+        const newIssue = new Tolab({
+            item,
+            quantity,
+            labName,
+            category,
+            numberOfUnits,
+            issueTo,
+            issueBy,
+            existingBalance: balance,
+            updatedBalance,
+            itemRelation: chem ? chem._id : null 
+        });
+        await newIssue.save();
+
+        chem.availableBalance = updatedBalance;
+        await chem.save()
+        res.status(201).json({ message: "item issued to lab" });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});*/
 router.post('/', async (req, res) => {
     try {
         const { item, quantity, labName, category, numberOfUnits, issueTo, issueBy } = req.body;

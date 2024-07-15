@@ -2,12 +2,13 @@ const express = require('express');
 
 const router = express.Router();
 const Category = require('../../models/category')
-const Item = require('../../models/addItem')
+const Item = require('../../models/addItem');
+const { adminAuth } = require('../middleaware/middleAware');
 
 
 
 //@route for add item
-router.post("/", async (req, res) => {
+router.post("/",adminAuth, async (req, res) => {
     const { itemName, categoryId, unit, description } = req.body;
 
     if(!itemName || !categoryId)  return res.status(400).json({ msg: 'Item name and category id are required' });
@@ -42,7 +43,7 @@ router.post("/", async (req, res) => {
 
 //@route delete item
 
-router.delete('/:id',async (req,res)=>{
+router.delete('/:id',adminAuth,async (req,res)=>{
     const id = req.params.id;
     try {
 
@@ -69,7 +70,7 @@ router.delete('/:id',async (req,res)=>{
 
 //@route search by id
 
-router.get('/:id',async (req,res) => {
+router.get('/:id',adminAuth, async (req,res) => {
   const id = req.params.id;
   try {
 
@@ -89,7 +90,7 @@ router.get('/:id',async (req,res) => {
 })
 
 //@route get all items
-router.get("/", async (req, res) => {
+router.get("/",adminAuth, async (req, res) => {
     try {
         // Find all items and populate the category field
         const items = await Item.find().populate('category').exec();
@@ -106,7 +107,7 @@ router.get("/", async (req, res) => {
 
 //@route update
 
-router.put('/:id',async (req,res)=>{
+router.put('/:id',adminAuth, async (req,res)=>{
     const { itemName, unit, description } = req.body;
     
     const id = req.params.id
