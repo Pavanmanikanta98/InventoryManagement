@@ -2,55 +2,48 @@ const express = require('express');
 
 const router = express.Router();
 const ToCentral = require('../../../models/stockRegister');
+//const Item = require('../../../models/addItem');
 
-/*
-//@route to issue item to lab
-router.post("/", async (req, res) => {
-    const { item, category, ReceivedFrom, date, unitPrice, invoice, numberOfUnits, quantityType, quantityPerUnit } = req.body;
-
-    if (item === null || category === null || ReceivedFrom === null || date === null || unitPrice === null ||
-        invoice === null || numberOfUnits === null || quantityType === null || quantityPerUnit === null) {
-        return res.status(400).json({ msg: 'data insuff' });
-    }
-
-    try {
-        const newIssue = new ToCentral({
-            item,
-            category,
-            ReceivedFrom,
-            date,
-            unitPrice,
-            invoice,
-            numberOfUnits,
-            quantityType,
-            quantityPerUnit
-        });
-        await newIssue.save();
-        res.status(201).json({ message: "item issued to Central stock" });
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
-    }
-});*/
 
 router.post('/', async (req, res) => {
     try {
         const { item, receivedFrom, unitPrice, invoice, numberOfUnits, category, quantityType, quantityPerUnit } = req.body;
-        
+
         // Find the stock item or create a new one if it doesn't exist
         let stockItem = await ToCentral.findOne({ item }).sort({ _id: -1 });
         if (!stockItem) {
-            stockItem = new ToCentral({ item, receivedFrom, unitPrice, invoice, numberOfUnits, category, quantityType, quantityPerUnit,duringIssue, availableBalance: numberOfUnits*quantityPerUnit });
+            stockItem = new ToCentral({
+                 item,
+                 receivedFrom, 
+                 unitPrice, 
+                 invoice, 
+                 numberOfUnits, 
+                 category, quantityType, 
+                 quantityPerUnit, 
+                 duringIssue : 0, 
+                 availableBalance: numberOfUnits * quantityPerUnit 
+            });
         } else {
             // Update the available balance
             const mostRecentItem = await ToCentral.findOne({ item }).sort({ _id: -1 });
 
-        // Ensure the existing available balance is a valid number
+            // Ensure the existing available balance is a valid number
             const existingBalance = mostRecentItem && mostRecentItem.availableBalance ? mostRecentItem.availableBalance : 0;
-            stockItem = new ToCentral({ item, receivedFrom, unitPrice, invoice, numberOfUnits, category, quantityType, quantityPerUnit,duringIssue:existingBalance, availableBalance: (numberOfUnits*quantityPerUnit)+existingBalance });
-            
+            stockItem = new ToCentral({
+                 item, 
+                 receivedFrom, 
+                 unitPrice, 
+                 invoice, 
+                 numberOfUnits, 
+                 category, 
+                 quantityType, 
+                 quantityPerUnit, 
+                 duringIssue: existingBalance, 
+                 availableBalance: (numberOfUnits * quantityPerUnit) + existingBalance }
+            );
+
             // stockItem.availableBalance +=numberOfUnits*quantityPerUnit;
-            
+
         }
 
         // Save the stock item
@@ -61,28 +54,48 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/:item', async (req, res) => {
+
+//@route to get all items availabe balance
+router.get("/availability", async (req, res) => {
     try {
-        const stockItem = await ToCentral.findOne({ item: req.params.item }).sort({ _id: -1 });
-        if (!stockItem) {
-            return res.status(404).json({ msg: 'Item not found' });
+       const items = await ToCentral.aggregate([
+        {
+            $sort: { item: 1, _id: -1 }
+        },
+        {
+            $group: {
+                _id: "$item",
+                item: { $first: "$item" },
+                availableBalance: { $first: "$availableBalance" }
+            }
         }
-        res.json({ availableBalance: stockItem.availableBalance });
+    ]);
+
+    // Map through the items to ensure all have availableBalance
+    const itemBalances = items.map(item => ({
+        item: item.item,
+        availableBalance: item.availableBalance || 0
+    }));
+
+    res.json(itemBalances);
+
+
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error(err.message);
+        res.status(500).send('Server error');
     }
-})
+});
 
 //@route to get all issues to central stock
-// router.get('/', async (req, res) => {
-//     try {
-//         const issues = await ToCentral.find().sort({ date: -1 });
-//         return res.json(issues);
-//     } catch (err) {
-//         console.error(err.message);
-//         res.status(500).send('Server Error');
-//     }
-// });
+router.get('/', async (req, res) => {
+    try {
+        const issues = await ToCentral.find().sort({ _id: -1 });
+        return res.json(issues);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 //@route to delete an issue
 
@@ -108,7 +121,7 @@ router.delete('/', async (req, res) => {
 
 //@route to update an issue
 router.patch('/', async (req, res) => {
-    const { item, category, ReceivedFrom, date, unitPrice, invoice, numberOfUnits, quantityType, quantityPerUnit } = req.body;
+    const { item, category, receivedFrom, date, unitPrice, invoice, numberOfUnits, quantityType, quantityPerUnit } = req.body;
 
     const { id } = req.body;
 
@@ -119,7 +132,7 @@ router.patch('/', async (req, res) => {
         }
         if (item) issue.item = item;
         if (category) issue.category = category;
-        if (ReceivedFrom) issue.ReceivedFrom = ReceivedFrom;
+        if (ReceivedFrom) issue.receivedFrom = receivedFrom;
         if (date) issue.date = date;
         if (unitPrice) issue.unitPrice = unitPrice;
         if (invoice) issue.invoice = invoice;
